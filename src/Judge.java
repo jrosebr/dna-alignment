@@ -3,7 +3,7 @@
  * 
  * TODO: You are to implement the two score() methods.
  *  
- * @author <put your name here>
+ * @author Jack Rosebrock
  */
 
 public class Judge
@@ -59,11 +59,15 @@ public class Judge
    */
   public int score(char a, char b)
   {
-    if (a == null || b == null)
-    {
-      System.out.println("At least 1 of the characters is null.");
+    if (a == Constants.GAP_CHAR || b == Constants.GAP_CHAR)
+      return DEFAULT_GAP_COST;
 
-    }
+
+    else if (a == b)
+      return DEFAULT_MATCH_COST;
+
+    else
+      return DEFAULT_MISMATCH_COST;
   }
   
   /**
@@ -72,6 +76,6 @@ public class Judge
    * Returns the score associated with the two strings.
    */
   public int score(String s1, String s2) {
-    return 0;  // delete this line and add your code
+    SequenceAligner(s1, s2, judge)
   }
 }
