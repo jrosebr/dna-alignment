@@ -6,7 +6,8 @@
  * @author <put your name here>
  */
 
-public class Judge {
+public class Judge
+{
 
   public static final int DEFAULT_MATCH_COST = 2;
   public static final int DEFAULT_MISMATCH_COST = -2;
@@ -56,8 +57,13 @@ public class Judge {
    * 
    * Returns the score associated with the two characters.
    */
-  public int score(char a, char b) {
-    return 0;  // delete this line and add your code
+  public int score(char a, char b)
+  {
+    if (a == null || b == null)
+    {
+      System.out.println("At least 1 of the characters is null.");
+
+    }
   }
   
   /**

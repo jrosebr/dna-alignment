@@ -5,7 +5,8 @@ import java.util.Random;
  * that order. This is the biggest part of this project.
  */
 
-public class SequenceAligner {
+public class SequenceAligner
+{
     private static Random gen = new Random();
 
     private String x, y;
@@ -33,7 +34,8 @@ public class SequenceAligner {
     /**
      * Aligns the given strands using the specified judge.
      */
-    public SequenceAligner(String x, String y, Judge judge) {
+    public SequenceAligner(String x, String y, Judge judge)
+    {
         this.x = x.toUpperCase();
         this.y = y.toUpperCase();
         this.judge = judge;
@@ -94,7 +96,8 @@ public class SequenceAligner {
      * are picking the operation with the biggest payoff and two or more
      * operations have the same max score.
      */
-    private void fillCache() {
+    private void fillCache()
+    {
         // delete this line and add your code
     }
 
@@ -103,7 +106,8 @@ public class SequenceAligner {
      * first i characters in x and the first j characters in y. You can
      * find the result in O(1) time by looking in your cache.
      */
-    public Result getResult(int i, int j) {
+    public Result getResult(int i, int j)
+    {
         return null;  // delete this line and add your code
     }
 
