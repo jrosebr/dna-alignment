@@ -14,7 +14,11 @@ public class StudentTest {
     customJudgeTest();
     empties();
     singletons();
-    // your tests go here
+    testJudgeScoreChar();
+    testJudgeScoreString();
+    testSequenceAlignerAlignment();
+    testSequenceAlignerScore();
+    testSequenceAlignerRandom();
   }
 
   @Test
@@ -78,6 +82,54 @@ public class StudentTest {
     assertTrue(sa.isAligned());
     assertEquals("ACGT", sa.getAlignedX());
     assertEquals("ACGT", sa.getAlignedY());
+  }
+
+  @Test
+  public void testJudgeScoreChar() {
+    Judge judge = new Judge();
+    assertEquals(2, judge.score('A', 'A'));
+    assertEquals(-2, judge.score('A', 'C'));
+    assertEquals(-1, judge.score('A', '_'));
+    assertEquals(-1, judge.score('_', 'A'));
+  }
+
+  @Test
+  public void testJudgeScoreString() {
+    Judge judge = new Judge();
+    assertEquals(8, judge.score("ACGT", "ACGT"));
+    assertEquals(-8, judge.score("ACGT", "TGCA"));
+    assertEquals(-4, judge.score("ACGT", "____"));
+  }
+
+  @Test
+  public void testSequenceAlignerAlignment() {
+    Judge judge = new Judge();
+    String x = "ACACCC";
+    String y = "GCCTCGA";
+
+    SequenceAligner aligner = new SequenceAligner(x, y, judge);
+    assertEquals("ACAC_C_C", aligner.getAlignedX());
+    assertEquals("GC_CTCGA", aligner.getAlignedY());
+  }
+
+  @Test
+  public void testSequenceAlignerScore() {
+    Judge judge = new Judge();
+    String x = "ACACCC";
+    String y = "GCCTCGA";
+
+    SequenceAligner aligner = new SequenceAligner(x, y, judge);
+    assertEquals(-1, aligner.getScore());
+  }
+
+  @Test
+  public void testSequenceAlignerRandom() {
+    Judge judge = new Judge();
+    int n = 6;
+    SequenceAligner aligner = new SequenceAligner(n);
+
+    assertEquals(n, aligner.getX().length());
+    assertTrue(aligner.getY().length() >= n / 2 && aligner.getY().length() <= 3 * n / 2);
   }
 
 }

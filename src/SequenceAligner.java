@@ -5,8 +5,7 @@ import java.util.Random;
  * that order. This is the biggest part of this project.
  */
 
-public class SequenceAligner
-{
+public class SequenceAligner {
     private static Random gen = new Random();
 
     private String x, y;
@@ -34,8 +33,7 @@ public class SequenceAligner
     /**
      * Aligns the given strands using the specified judge.
      */
-    public SequenceAligner(String x, String y, Judge judge)
-    {
+    public SequenceAligner(String x, String y, Judge judge) {
         this.x = x.toUpperCase();
         this.y = y.toUpperCase();
         this.judge = judge;
@@ -96,9 +94,37 @@ public class SequenceAligner
      * are picking the operation with the biggest payoff and two or more
      * operations have the same max score.
      */
-    private void fillCache()
-    {
-        // delete this line and add your code
+    private void fillCache() {
+        cache[0][0] = new Result(0, Direction.NONE); // Set the initial cell
+
+        // Initialize the first row and first column
+        for (int i = 1; i <= n; i++) {
+            cache[i][0] = new Result(i * judge.getGapCost(), Direction.UP);
+        }
+        for (int j = 1; j <= m; j++) {
+            cache[0][j] = new Result(j * judge.getGapCost(), Direction.LEFT);
+        }
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                int matchScore = cache[i - 1][j - 1].getScore() + judge.score(x.charAt(i - 1), y.charAt(j - 1));
+                int insScore = cache[i][j - 1].getScore() + judge.getGapCost();
+                int delScore = cache[i - 1][j].getScore() + judge.getGapCost();
+
+                int maxScore = Math.max(matchScore, Math.max(insScore, delScore));
+                Direction dir;
+
+                if (maxScore == matchScore) {
+                    dir = Direction.DIAGONAL;
+                } else if (maxScore == insScore) {
+                    dir = Direction.LEFT;
+                } else {
+                    dir = Direction.UP;
+                }
+
+                cache[i][j] = new Result(maxScore, dir);
+            }
+        }
     }
 
     /**
@@ -106,9 +132,8 @@ public class SequenceAligner
      * first i characters in x and the first j characters in y. You can
      * find the result in O(1) time by looking in your cache.
      */
-    public Result getResult(int i, int j)
-    {
-        return null;  // delete this line and add your code
+    public Result getResult(int i, int j) {
+        return cache[i][j];
     }
 
     /**
@@ -123,7 +148,33 @@ public class SequenceAligner
      * and m is the length of y.
      */
     private void traceback() {
-        // delete this line and add your code
+        int i = n;
+        int j = m;
+        StringBuilder alignedXBuilder = new StringBuilder();
+        StringBuilder alignedYBuilder = new StringBuilder();
+
+        while (i > 0 || j > 0) {
+            Result current = cache[i][j];
+            current.markPath();
+            if (current.getParent() == Direction.DIAGONAL) {
+                alignedXBuilder.insert(0, x.charAt(i - 1));
+                alignedYBuilder.insert(0, y.charAt(j - 1));
+                i--;
+                j--;
+            } else if (current.getParent() == Direction.UP) {
+                alignedXBuilder.insert(0, x.charAt(i - 1));
+                alignedYBuilder.insert(0, Constants.GAP_CHAR);
+                i--;
+            } else if (current.getParent() == Direction.LEFT) {
+                alignedXBuilder.insert(0, Constants.GAP_CHAR);
+                alignedYBuilder.insert(0, y.charAt(j - 1));
+                j--;
+            }
+        }
+
+        alignedX = alignedXBuilder.toString();
+        alignedY = alignedYBuilder.toString();
+        cache[0][0].markPath();
     }
 
     /**

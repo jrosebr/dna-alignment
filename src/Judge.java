@@ -1,27 +1,26 @@
 /**
  * This class is used to score alignments. 
- * 
+ *
  * TODO: You are to implement the two score() methods.
- *  
- * @author Jack Rosebrock
+ *
+ * @author <put your name here>
  */
 
-public class Judge
-{
+public class  Judge {
 
   public static final int DEFAULT_MATCH_COST = 2;
   public static final int DEFAULT_MISMATCH_COST = -2;
   public static final int DEFAULT_GAP_COST = -1;
-  
+
   private int matchCost, mismatchCost, gapCost;
-  
+
   /**
    * Creates the default judge.
    */
   public Judge() {
     this(DEFAULT_MATCH_COST, DEFAULT_MISMATCH_COST, DEFAULT_GAP_COST);
   }
-  
+
   /**
    * Creates a judge using the specified costs.
    */
@@ -30,52 +29,56 @@ public class Judge
     this.mismatchCost = mismatchCost;
     this.gapCost = gapCost;
   }
-  
+
   /**
    * Returns the gap cost used by this judge.
    */
   public int getGapCost() {
     return gapCost;
   }
-  
+
   /**
    * Returns the match cost used by this judge.
    */
   public int getMatchCost() {
     return matchCost;
   }
-  
+
   /**
    * Returns the mismatch cost used by this judge.
    */
   public int getMismatchCost() {
     return mismatchCost;
   }
-  
+
   /**
    * TODO
-   * 
+   *
    * Returns the score associated with the two characters.
    */
-  public int score(char a, char b)
-  {
-    if (a == Constants.GAP_CHAR || b == Constants.GAP_CHAR)
-      return DEFAULT_GAP_COST;
-
-
-    else if (a == b)
-      return DEFAULT_MATCH_COST;
-
-    else
-      return DEFAULT_MISMATCH_COST;
+  public int score(char a, char b) {
+    if (a == '_' || b == '_') {
+      return gapCost;
+    } else if (a == b) {
+      return matchCost;
+    } else {
+      return mismatchCost;
+    }
   }
-  
+
   /**
    * TODO
-   * 
+   *
    * Returns the score associated with the two strings.
    */
   public int score(String s1, String s2) {
-    SequenceAligner(s1, s2, judge)
+    if (s1.length() != s2.length()) {
+      throw new IllegalArgumentException("Strings must be of equal length to score.");
+    }
+    int score = 0;
+    for (int i = 0; i < s1.length(); i++) {
+      score += score(s1.charAt(i), s2.charAt(i));
+    }
+    return score;
   }
 }
